@@ -1,0 +1,54 @@
+<!doctype html>
+<head>
+    <title>Digit Recognition</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+	crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="jumbotron text-center">
+        <p class="lead">Digit Recognition with the Scikit-Learn MNIST dataset in Flask</p>
+        <small>By Adem Kaya</small>
+    </div>
+
+    <div class="text-center">
+        <button id="clearDrawing" class="btn btn-dark">Clear</button>
+        <button id="predictDrawing" class="btn btn-light">Predict</button>
+        <p id="predictedNumber"></p>
+    </div>
+
+    <canvas id="drawingCanvas" width="300" height="300" style="margin-left:auto;margin-right:auto;display:block;border:1px solid black;"></canvas>
+    <img id="img">
+    <br>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <script type="text/javascript">
+        $('#clearDrawing').on('click', function(e) {
+            var canvas = document.getElementById('drawingCanvas');
+            var context = canvas.getContext('2d');
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        $('#predictDrawing').on('click', function(e) {
+            var canvas = document.getElementById('drawingCanvas');
+
+            $.ajax({
+                type: "POST",
+                url: '/predict',
+                data: JSON.stringify({'image': canvas.toDataURL()}),
+                contentType: "application/json; charset=utf-8",
+            }).done(function(data) {
+                console.log(data);
+                var text = $('#predictedNumber').text();
+                $('#predictedNumber').text('Predicted number: ' + data)
+            });
+        });
+    </script>
+</body>
