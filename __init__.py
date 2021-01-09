@@ -10,7 +10,7 @@ from boundingbox import bounding_box
 
 
 app = Flask(__name__)
-model = tf.keras.models.load_model('Git/flask-digitrecognizer/olddigits.model')
+model = tf.keras.models.load_model('Git/flask-digitrecognizer/digits.model')
 
 
 @app.route('/')
@@ -33,7 +33,6 @@ def predict():
     confidence = round(np.max(prediction) * 100, 1)
     predicted_number = np.argmax(prediction)
     
-
     return str(predicted_number) + " - Confidence: " + str(confidence) + "%"
 
 
