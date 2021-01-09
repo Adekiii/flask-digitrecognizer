@@ -5,10 +5,12 @@ from io import BytesIO
 import base64
 import joblib 
 import numpy as np
+import tensorflow as tf 
+import matplotlib.pyplot as plt 
 
 
 app = Flask(__name__)
-model = joblib.load('digits_model')
+model = tf.keras.models.load_model('Git/flask-digitrecognizer/digits.model')
 
 
 @app.route('/')
@@ -21,12 +23,12 @@ def predict():
     json_data = request.get_json()['image']
     img_data = base64.b64decode(json_data[22:])
 
-    img_matrix = skio.imread(BytesIO(img_data))[:,:,3]
+    img = skio.imread(BytesIO(img_data))[:,:,3]
 
-    matrix_resized = resize(img_matrix, (8, 8), anti_aliasing=False)
-    matrix_resized = np.array(matrix_resized * 50)
+    img = resize(img, (28, 28), anti_aliasing=False)
 
-    predicted_number = model.predict(matrix_resized.reshape(1, -1))[0]
+    predicted_number = model.predict(img.reshape(1, -1))
+    predicted_number = np.argmax(predicted_number)
 
     return str(predicted_number)
 
