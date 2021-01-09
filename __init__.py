@@ -7,6 +7,7 @@ import joblib
 import numpy as np
 import tensorflow as tf 
 import matplotlib.pyplot as plt 
+from boundingbox import bounding_box
 
 
 app = Flask(__name__)
@@ -25,12 +26,19 @@ def predict():
 
     img = skio.imread(BytesIO(img_data))[:,:,3]
 
-    img = resize(img, (28, 28), anti_aliasing=False)
+    img = bounding_box(img)
+    img = resize(img, (28, 28), anti_aliasing=True)
 
-    predicted_number = model.predict(img.reshape(1, -1))
-    predicted_number = np.argmax(predicted_number)
+    plt.imshow(img, cmap=plt.cm.binary)
+    plt.show()
 
-    return str(predicted_number)
+    prediction = model.predict(img.reshape(1, -1))
+
+    confidence = round(np.max(prediction) * 100, 1)
+    predicted_number = np.argmax(prediction)
+    
+
+    return str(predicted_number) + " - Confidence: " + str(confidence) + "%"
 
 
 if __name__ == '__main__':
