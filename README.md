@@ -7,4 +7,4 @@ The model uses random forest classification to predict the user's drawn digits.
 
 Below is an example:
 
-![Sample](https://github.com/Adekiii/flask-digitrecognizer/blob/master/sample.png)
+![Sample](https://github.com/Adekiii/flask-digitrecognizer/blob/master/sample_1.png)
