@@ -1,7 +1,7 @@
 var canvas = document.getElementById('drawingCanvas');
 var context = canvas.getContext('2d');
 
-var radius = 4;
+var radius = 5;
 var start = 0;
 var end = Math.PI * 2;
 var clicking = false;

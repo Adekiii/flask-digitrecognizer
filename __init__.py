@@ -6,12 +6,11 @@ import base64
 import joblib 
 import numpy as np
 import tensorflow as tf 
-import matplotlib.pyplot as plt 
 from boundingbox import bounding_box
 
 
 app = Flask(__name__)
-model = tf.keras.models.load_model('Git/flask-digitrecognizer/digits.model')
+model = tf.keras.models.load_model('Git/flask-digitrecognizer/olddigits.model')
 
 
 @app.route('/')
@@ -28,9 +27,6 @@ def predict():
 
     img = bounding_box(img)
     img = resize(img, (28, 28), anti_aliasing=True)
-
-    plt.imshow(img, cmap=plt.cm.binary)
-    plt.show()
 
     prediction = model.predict(img.reshape(1, -1))
 
